@@ -1,3 +1,7 @@
+# 注意
+
+bigo 内置的插件，基于社区 v2.5.3 版本
+
 # Altinity Grafana datasource plugin for ClickHouse (grafana Grafana 4.6+ supported)
 
 Altinity ClickHouse datasource plugin provides a support for [ClickHouse](https://clickhouse.tech) as a backend database.
@@ -35,22 +39,21 @@ Restart Grafana, check data sources list at Configuration -> Datasources -> New,
 ![Add new datasource](https://user-images.githubusercontent.com/105560/171435032-126105fe-18d9-425d-b65b-ba334d341dc4.png)
 ![Datasource types](https://user-images.githubusercontent.com/105560/171435316-ed096a40-c0e8-417a-b8ed-371ae61773b2.png)
 
-
 ## Features
 
-* Access to CH via HTTP / HTTPS
-* Query setup
-* Raw SQL editor
-* Query formatting
-* Macros support
-* Additional functions
-* Templates
-* Table view
-* SingleStat view
-* Ad-hoc filters
-* Annotations
-* Alerts support
-* Logs support
+-   Access to CH via HTTP / HTTPS
+-   Query setup
+-   Raw SQL editor
+-   Query formatting
+-   Macros support
+-   Additional functions
+-   Templates
+-   Table view
+-   SingleStat view
+-   Ad-hoc filters
+-   Annotations
+-   Alerts support
+-   Logs support
 
 ## Access to CH via HTTP / HTTPS
 
@@ -64,15 +67,16 @@ There is a small feature - ClickHouse treats HTTP Basic Authentication credentia
 
 Using of [CHProxy](https://github.com/ContentSquare/chproxy) will bring additional features:
 
-* Easily setup `HTTPS` access to ClickHouse as shown [here](https://github.com/ContentSquare/chproxy#authorize-users-by-passwords-via-https)
-to provide secure access.
-* Limit concurrency and execution time for requests from `Grafana` as shown [here](https://github.com/ContentSquare/chproxy#spread-selects-from-reporting-apps-among-cluster-nodes)
-to prevent `ClickHouse` overloading from `Grafana`.
-* Protection against request bursts for dashboards with numerous graphs. `CHProxy` allows queueing requests and execute them sequentially.
-To learn more - read about params `max_queue_size` and `max_queue_time` at [CHProxy](https://github.com/ContentSquare/chproxy) page.
-* Response caching for the most frequent queries as shown [here](https://github.com/ContentSquare/chproxy#caching).
+-   Easily setup `HTTPS` access to ClickHouse as shown [here](https://github.com/ContentSquare/chproxy#authorize-users-by-passwords-via-https)
+    to provide secure access.
+-   Limit concurrency and execution time for requests from `Grafana` as shown [here](https://github.com/ContentSquare/chproxy#spread-selects-from-reporting-apps-among-cluster-nodes)
+    to prevent `ClickHouse` overloading from `Grafana`.
+-   Protection against request bursts for dashboards with numerous graphs. `CHProxy` allows queueing requests and execute them sequentially.
+    To learn more - read about params `max_queue_size` and `max_queue_time` at [CHProxy](https://github.com/ContentSquare/chproxy) page.
+-   Response caching for the most frequent queries as shown [here](https://github.com/ContentSquare/chproxy#caching).
 
 `Caching` will protect `ClickHouse` from excessive refreshes and will be optimal option for popular dashboards.
+
 > Hint - if you need to cache requests like `last 24h` where timestamp changes constantly then try to use `Round` option at `Raw Editor`
 
 ## Query setup
@@ -84,9 +88,9 @@ Query setup interface:
 First row `FROM` contains two options: database and table. Table values depends on a selected database.
 Second row contains selectors for time filtering:
 
-* Column:Date ([EventDate](https://clickhouse.tech/docs/en/sql-reference/data-types/date/))
-* Column:DateTime ([DateTime](https://clickhouse.tech/docs/en/sql-reference/data-types/datetime/))
-* Column:TimeStamp ([UInt32](https://clickhouse.tech/docs/en/sql-reference/data-types/int-uint/)).
+-   Column:Date ([EventDate](https://clickhouse.tech/docs/en/sql-reference/data-types/date/))
+-   Column:DateTime ([DateTime](https://clickhouse.tech/docs/en/sql-reference/data-types/datetime/))
+-   Column:TimeStamp ([UInt32](https://clickhouse.tech/docs/en/sql-reference/data-types/int-uint/)).
 
 > Plugin will try to detect date columns automatically
 > `Column:DateTime` or `Column:TimeStamp` are required for time-based macros and functions because all analytics based on these values
@@ -106,19 +110,19 @@ Under the Editor you can find a raw query (all macros and functions have already
 
 Plugin supports the following marcos:
 
-* $table - replaced with selected table name from Query Builder
-* $dateCol - replaced with `Column:Date` value from Query Builder
-* $dateTimeCol - replaced with `Column:DateTime` or `Column:TimeStamp` value from Query Builder
-* $from - replaced with (timestamp with ms)/1000 value of UI selected "Time Range:From"
-* $to - replaced with (timestamp with ms)/1000 value of UI selected "Time Range:To"
-* $interval - replaced with selected "Group by a time interval" value (as a number of seconds)
-* $timeFilter - replaced with currently selected "Time Range".
-  Requires Column:Date and Column:DateTime or Column:TimeStamp to be selected.
-* $timeFilterByColumn($column) - replaced with currently selected "Time Range" for a column passed as `$column` argument. Use it in queries or query variables as `...WHERE $timeFilterColumn($column)...` or `...WHERE $timeFilterColumn(created_at)...`.
-* $timeSeries - replaced with special ClickHouse construction to convert results as time-series data. Use it as "SELECT $timeSeries...".
-* $naturalTimeSeries - replaced with special ClickHouse construction to convert results as time-series with in a logical/natural breakdown. Use it as "SELECT $naturalTimeSeries...".
-* $unescape - unescapes variable value by removing single quotes. Used for multiple-value string variables: "SELECT $unescape($column) FROM requests WHERE $unescape($column) = 5"
-* $adhoc - replaced with a rendered ad-hoc filter expression, or "1" if no ad-hoc filters exist. Since ad-hoc applies automatically only to outer queries the macros can be used for filtering in inner queries.
+-   $table - replaced with selected table name from Query Builder
+-   $dateCol - replaced with `Column:Date` value from Query Builder
+-   $dateTimeCol - replaced with `Column:DateTime` or `Column:TimeStamp` value from Query Builder
+-   $from - replaced with (timestamp with ms)/1000 value of UI selected "Time Range:From"
+-   $to - replaced with (timestamp with ms)/1000 value of UI selected "Time Range:To"
+-   $interval - replaced with selected "Group by a time interval" value (as a number of seconds)
+-   $timeFilter - replaced with currently selected "Time Range".
+    Requires Column:Date and Column:DateTime or Column:TimeStamp to be selected.
+-   $timeFilterByColumn($column) - replaced with currently selected "Time Range" for a column passed as `$column` argument. Use it in queries or query variables as `...WHERE $timeFilterColumn($column)...` or `...WHERE $timeFilterColumn(created_at)...`.
+-   $timeSeries - replaced with special ClickHouse construction to convert results as time-series data. Use it as "SELECT $timeSeries...".
+-   $naturalTimeSeries - replaced with special ClickHouse construction to convert results as time-series with in a logical/natural breakdown. Use it as "SELECT $naturalTimeSeries...".
+-   $unescape - unescapes variable value by removing single quotes. Used for multiple-value string variables: "SELECT $unescape($column) FROM requests WHERE $unescape($column) = 5"
+-   $adhoc - replaced with a rendered ad-hoc filter expression, or "1" if no ad-hoc filters exist. Since ad-hoc applies automatically only to outer queries the macros can be used for filtering in inner queries.
 
 A description of macros is available by typing their names in Raw Editor
 
@@ -129,9 +133,9 @@ If you need some additional complexity - just copy raw sql into Raw Editor and m
 
 There are some limits in function use because of poor query analysis:
 
-* Column:Date and Column:DateTime or Column:TimeStamp must be set in Query Builder
-* Query must begin from function name
-* Only one function can be used per query
+-   Column:Date and Column:DateTime or Column:TimeStamp must be set in Query Builder
+-   Query must begin from function name
+-   Only one function can be used per query
 
 Plugin supports the following functions:
 
@@ -487,13 +491,13 @@ ORDER BY t
 If you add a template variable of the type `Query`, you can write a ClickHouse query that can
 return things like measurement names, key names or key values that are shown as a dropdown select box.
 
-For example, you can have a variable that contains all values for the `hostname` column in a table if you specify a query like this in the templating variable *Query* setting.
+For example, you can have a variable that contains all values for the `hostname` column in a table if you specify a query like this in the templating variable _Query_ setting.
 
 ```sql
 SELECT hostname FROM host
 ```
 
-To use time range dependent macros like `timeFilterByColumn($column)` in your query the refresh mode of the template variable needs to be set to *On Time Range Change*.
+To use time range dependent macros like `timeFilterByColumn($column)` in your query the refresh mode of the template variable needs to be set to _On Time Range Change_.
 
 ```sql
 SELECT event_name FROM event_log WHERE $timeFilterByColumn(time_column)
@@ -520,50 +524,50 @@ If the variable is type query with all selected or if the variable is a textbox 
 
 To give an example:
 with 2 variables
-  $var query with include All option
-  $text textbox
-  $text_with_single_quote textbox with single quote
+$var query with include All option
+$text textbox
+$text_with_single_quote textbox with single quote
 
-  The following query
+The following query
 
-  ```sql
-   SELECT
-     $timeSeries as t,
-     count()
+```sql
+ SELECT
+   $timeSeries as t,
+   count()
+   FROM $table
+   WHERE $timeFilter
+    $conditionalTest(AND toLowerCase(column) in ($var),$var)
+    $conditionalTest(AND toLowerCase(column2) like '%$text%',$text)
+    $conditionalTest(AND toLowerCase(column3) ilike ${text_with_single_quote:sqlstring},$text_with_single_quote)
+   GROUP BY t
+   ORDER BY t
+```
+
+if the `$var` is selected as "All" value, and the `$text` variable is empty, the query will be converted into:
+
+```sql
+  SELECT
+    $timeSeries as t,
+    count()
      FROM $table
      WHERE $timeFilter
-      $conditionalTest(AND toLowerCase(column) in ($var),$var)
-      $conditionalTest(AND toLowerCase(column2) like '%$text%',$text)
-      $conditionalTest(AND toLowerCase(column3) ilike ${text_with_single_quote:sqlstring},$text_with_single_quote)
-     GROUP BY t
-     ORDER BY t
-  ```
+   GROUP BY t
+   ORDER BY t
+```
 
-   if the `$var` is selected as "All" value, and the `$text` variable is empty, the query will be converted into:
+If the `$var` template variable have select some elements, and the `$text` template variable has at least one char, the query will be converted into:
 
-  ```sql
-    SELECT
-      $timeSeries as t,
-      count()
-       FROM $table
-       WHERE $timeFilter
-     GROUP BY t
-     ORDER BY t
-  ```
-
-  If the `$var` template variable have select some elements, and the `$text` template variable has at least one char, the query will be converted into:
-
-  ```sql
-  SELECT
-      $timeSeries as t,
-      count()
-       FROM $table
-       WHERE $timeFilter
-     AND toLowerCase(column) in ($var)
-     AND toLowerCase(column2) like '%$text%'
-     GROUP BY t
-     ORDER BY t
- ```
+```sql
+SELECT
+    $timeSeries as t,
+    count()
+     FROM $table
+     WHERE $timeFilter
+   AND toLowerCase(column) in ($var)
+   AND toLowerCase(column2) like '%$text%'
+   GROUP BY t
+   ORDER BY t
+```
 
 ## Working with panels
 
@@ -622,8 +626,8 @@ ORDER BY
 
 To make the vertical histogram from graph panel we will need to edit some settings:
 
-* Display -> Draw Modes -> Bars
-* Axes -> X-Axis -> Mode -> Series
+-   Display -> Draw Modes -> Bars
+-   Axes -> X-Axis -> Mode -> Series
 
 You can use next query:
 
@@ -739,13 +743,13 @@ To return suitable for logs data - query should return at least one time field (
 
 Plugin is also transforming all text fields, except log line, into the labels using following rules:
 
-* Log line will be taken either from dedicated `content` field or from first in order text field in result
-* All other text fields will be treated as a labels
+-   Log line will be taken either from dedicated `content` field or from first in order text field in result
+-   All other text fields will be treated as a labels
 
 There are few dedicated fields that are recognized by Grafana:
 
-* `level` (string) - set the level for each log line
-* `id` (string) - by default, Grafana offers basic support for deduplicating log lines, that can be improved by adding this field to explicitly assign identifiers to each log line
+-   `level` (string) - set the level for each log line
+-   `id` (string) - by default, Grafana offers basic support for deduplicating log lines, that can be improved by adding this field to explicitly assign identifiers to each log line
 
 All other fields returned from data source will be recognized by Grafana as [detected fields](https://grafana.com/docs/grafana/latest/explore/logs-integration/#labels-and-detected-fields)
 
@@ -760,45 +764,45 @@ Here are some provisioning example:
 apiVersion: 1
 
 datasources:
- - name: Clickhouse
-   type: vertamedia-clickhouse-datasource
-   access: proxy
-   url: http://localhost:8123
-   # <bool> enable/disable basic auth
-   basicAuth: false
-   # <string> basic auth username
-   basicAuthUser: "default"
-   # <bool> enable/disable with credentials headers
-   withCredentials: false
-   # <bool> mark as default datasource. Max one per org
-   isDefault: false
-   # <map> fields that will be converted to json and stored in json_data
-   jsonData:
-     # <bool> enable/disable sending 'add_http_cors_header=1' parameter
-     addCorsHeader: false
-     # <bool> enable/disable using POST method for sending queries
-     usePOST: false
-     # <string> default database name
-     defaultDatabase: ""
-     # <bool> enable/disable tls authorization
-     tlsAuth: false
-     # <bool> enable/disable tls authorization with custom ca
-     tlsAuthWithCACert: false
-     # <bool> enable/disable authorization with X-ClickHouse-* headers
-     useYandexCloudAuthorization: true
-     # <string> X-ClickHouse-User header value for authorization
-     xHeaderKey: ""
-     # <string> X-ClickHouse-Key header value for authorization
-     xHeaderUser: ""
-   secureJsonData:
-       # <string> basic auth password
-       basicAuthPassword: ""
-       # <string> custom certificate authority for TLS https connection, base64 encoded 
-       tlsCACert: ""
-       # <string> custom client certificate for TLS https connection, base64 encoded 
-       tlsClientCert: ""
-       # <string> custom client secret key for TLS https connection, base64 encoded 
-       tlsClientKey: ""
+    - name: Clickhouse
+      type: vertamedia-clickhouse-datasource
+      access: proxy
+      url: http://localhost:8123
+      # <bool> enable/disable basic auth
+      basicAuth: false
+      # <string> basic auth username
+      basicAuthUser: "default"
+      # <bool> enable/disable with credentials headers
+      withCredentials: false
+      # <bool> mark as default datasource. Max one per org
+      isDefault: false
+      # <map> fields that will be converted to json and stored in json_data
+      jsonData:
+          # <bool> enable/disable sending 'add_http_cors_header=1' parameter
+          addCorsHeader: false
+          # <bool> enable/disable using POST method for sending queries
+          usePOST: false
+          # <string> default database name
+          defaultDatabase: ""
+          # <bool> enable/disable tls authorization
+          tlsAuth: false
+          # <bool> enable/disable tls authorization with custom ca
+          tlsAuthWithCACert: false
+          # <bool> enable/disable authorization with X-ClickHouse-* headers
+          useYandexCloudAuthorization: true
+          # <string> X-ClickHouse-User header value for authorization
+          xHeaderKey: ""
+          # <string> X-ClickHouse-Key header value for authorization
+          xHeaderUser: ""
+      secureJsonData:
+          # <string> basic auth password
+          basicAuthPassword: ""
+          # <string> custom certificate authority for TLS https connection, base64 encoded
+          tlsCACert: ""
+          # <string> custom client certificate for TLS https connection, base64 encoded
+          tlsClientCert: ""
+          # <string> custom client secret key for TLS https connection, base64 encoded
+          tlsClientKey: ""
 ```
 
 Some settings and security params are the same for all datasources. You can find them [here](http://docs.grafana.org/administration/provisioning/#example-datasource-config-file).
@@ -864,4 +868,5 @@ see [CONTRIBUTING.md](https://github.com/Altinity/clickhouse-grafana/blob/master
 License
 
 ---
+
 MIT License, please see [LICENSE](https://github.com/Altinity/clickhouse-grafana/blob/master/LICENSE) for details.

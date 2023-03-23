@@ -1,6 +1,6 @@
 # 注意
 
-bigo 内置的插件，基于社区 v2.5.3 版本
+bigo 内置插件，基于社区 v2.5.3 版本。
 
 # Altinity Grafana datasource plugin for ClickHouse (grafana Grafana 4.6+ supported)
 

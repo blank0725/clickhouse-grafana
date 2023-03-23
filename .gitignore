@@ -8,3 +8,5 @@ yarn.lock
 ubuntu*.log
 dist/**.LICENSE.txt
 .idea/
+
+dist/
